@@ -1,0 +1,53 @@
+generator client {
+    provider = "prisma-client-js"
+    output   = "../src/generated/prisma"
+    moduleFormat = "esm"
+}
+
+datasource db {
+    provider = "mysql"
+}
+
+model User {
+    id Int @id @default(autoincrement())
+    name String @unique @db.Char(10)
+    password String
+
+    nickname String?
+
+    stats Stats?
+    upgrades Upgrade?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Stats {
+    userId Int @id
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    // gold
+    gold Int @default(0)
+    goldPerClick Int @default(0)
+    goldPerSecond Int @default(0)
+
+    // critical
+    criticalMult Decimal @default(0) @db.Decimal(10, 2)
+    criticalRate Decimal @default(0) @db.Decimal(3, 2)
+
+    // stats thingie
+    clickCount Int @default(0)
+}
+
+model Upgrade {
+    userId Int @id
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    // gold
+    goldPerClickLevel Int @default(0)
+    goldPerSecondLevel Int @default(0)
+    
+    // critical
+    criticalMultLevel Int @default(0)
+    criticalRateLevel Int @default(0)
+}

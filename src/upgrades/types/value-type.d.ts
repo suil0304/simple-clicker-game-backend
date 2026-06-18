@@ -1,0 +1,1 @@
+export type ValueType = "stack" | "multiply" | (string & {});
