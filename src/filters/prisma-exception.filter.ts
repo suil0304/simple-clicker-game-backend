@@ -6,16 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { Prisma } from '../generated/prisma/client';
-
-declare interface ExceptionMeta {
-  readonly driverAdapterError:{
-    readonly cause:{
-      readonly constraint:{
-        readonly index:string | undefined;
-      } | undefined;
-    } | undefined;
-  } | undefined;
-}
+import { ExceptionMeta } from '../types/exception-meta';
 
 @Catch(Prisma.PrismaClientKnownRequestError)
 export class PrismaExceptionFilter implements ExceptionFilter {
