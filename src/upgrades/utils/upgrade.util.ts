@@ -69,7 +69,7 @@ export class UpgradeUtil {
         );
 
         const upgradeInfo:UpgradeInfo = {
-            upgradeType: upgradeType,
+            upgradeKey: upgradeType,
             level: curLevel,
             curPrice: curPrice,
             curValue: curValue,

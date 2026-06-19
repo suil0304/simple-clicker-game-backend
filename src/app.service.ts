@@ -31,6 +31,13 @@ export class AppService {
             "<ul>",
             "   <li>GET /stats</li>",
             "   <li>POST /stats/sync</li>",
+            "</ul>",
+            "<h2>Settings</h2>",
+            "<p>Log in required.</p>",
+            "<ul>",
+            "   <li>GET /settings</li>",
+            "   <li>GET /settings/:settingKey</li>",
+            "   <li>POST /settings</li>",
             "</ul>"
         ].join("\n");
     }

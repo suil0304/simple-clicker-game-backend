@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Stats } from '../generated/prisma';
-import { CriticalUtil } from '../utils/critical.util';
+import { CriticalUtil } from './utils/critical.util';
 import { SyncDataDTO } from './dto/sync-data.dto';
 
 @Injectable()

@@ -17,6 +17,7 @@ model User {
 
     stats Stats?
     upgrades Upgrade?
+    settings Setting?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -50,4 +51,11 @@ model Upgrade {
     // critical
     criticalMultLevel Int @default(0)
     criticalRateLevel Int @default(0)
+}
+
+model Setting {
+    userId Int @id
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    darkMode Boolean @default(false)
 }

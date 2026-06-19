@@ -7,6 +7,7 @@ import { UpgradesModule } from './upgrades/upgrades.module';
 import { StatsModule } from './stats/stats.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { SettingsModule } from './settings/settings.module';
 import jwtConfig from './config/jwt.config';
 import databaseConfig from './config/database.config';
 
@@ -20,7 +21,8 @@ import databaseConfig from './config/database.config';
     UsersModule,
     StatsModule,
     UpgradesModule,
-    AuthModule
+    AuthModule,
+    SettingsModule
   ],
   controllers: [AppController],
   providers: [AppService],

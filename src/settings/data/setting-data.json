@@ -1,0 +1,11 @@
+{
+    "darkMode": {
+        "name": "다크모드",
+        "description": "전체 화면 UI를 검게 설정합니다.",
+        "type": "boolean",
+        "options": null,
+        "minValue": null,
+        "maxValue": null,
+        "step": null
+    }
+}

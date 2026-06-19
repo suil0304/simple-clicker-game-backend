@@ -1,0 +1,1 @@
+export type SettingType = "string" | "int" | "float" | "percent" | "boolean" | (string & {});
