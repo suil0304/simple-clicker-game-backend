@@ -27,8 +27,8 @@ export class UpgradesController {
     @Post()
     async buyUpgrade(
         @GetUser("sub") userId:number,
-        @Body() upgradeData:UpgradeDTO
+        @Body() upgradeType:UpgradeDTO
     ) {
-        return this.upgradesService.buyUpgrade(userId, upgradeData);
+        return this.upgradesService.buyUpgrade(userId, upgradeType);
     }
 }

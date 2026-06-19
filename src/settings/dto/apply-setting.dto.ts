@@ -10,7 +10,7 @@ export class ApplySettingDTO {
     readonly settingKey!:SettingKey;
 
     @IsIn(settingTypes)
-    readonly settingTypes!:SettingType;
+    readonly settingType!:SettingType;
 
     @Validate(isSettingValueType, {
         message: "applyValue는 string | number | boolean 타입이어야 합니다."

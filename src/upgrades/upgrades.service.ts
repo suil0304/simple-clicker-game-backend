@@ -42,7 +42,7 @@ export class UpgradesService {
         return infos;
     }
 
-    async getUpgrade(userId:number, upgradeType:UpgradeKey):Promise<UpgradeInfo> {
+    async getUpgrade(userId:number, upgradeKey:UpgradeKey):Promise<UpgradeInfo> {
         const userStats = await this.prisma.stats.findUniqueOrThrow({
             where: {
                 userId: userId
@@ -54,14 +54,14 @@ export class UpgradesService {
             }
         });
 
-        const upgradeLevelType = `${upgradeType}Level` as UpgradeLevelKey;
+        const upgradeLevelType = `${upgradeKey}Level` as UpgradeLevelKey;
 
-        const curUpgradeData = upgradeData[upgradeType];
+        const curUpgradeData = upgradeData[upgradeKey];
 
         return UpgradeUtil.getCurUpgradeInfo(
             upgradesLevelData[upgradeLevelType],
             userStats.gold,
-            upgradeType,
+            upgradeKey,
             curUpgradeData
         );
     }
@@ -79,7 +79,7 @@ export class UpgradesService {
                 }
             });
 
-            const upgradeKey:UpgradeKey = upgradeType.upgradeType;
+            const upgradeKey:UpgradeKey = upgradeType.upgradeKey;
             const upgradeLevelKey:UpgradeLevelKey = `${upgradeKey}Level`;
 
             const curUpgradeData = upgradeData[upgradeKey];

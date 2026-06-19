@@ -4,5 +4,5 @@ import type { UpgradeKey } from "../types/upgrade-key";
 
 export class UpgradeDTO {
     @IsIn(upgradeDataKeys)
-    readonly upgradeType!:UpgradeKey;
+    readonly upgradeKey!:UpgradeKey;
 }
