@@ -15,26 +15,26 @@ export class AuthService {
         const hashPassword = await bcrypt.hash(registerData.password, 10);
 
         return this.prisma.$transaction(async (db) => {
-            const user = await this.prisma.user.create({
+            const user = await db.user.create({
                 data: {
                     name: registerData.name,
                     password: hashPassword
                 }
             });
 
-            await this.prisma.stats.create({
+            await db.stats.create({
                 data: {
                     userId: user.id
                 }
             });
 
-            await this.prisma.upgrade.create({
+            await db.upgrade.create({
                 data: {
                     userId: user.id
                 }
             });
 
-            await this.prisma.setting.create({
+            await db.setting.create({
                 data: {
                     userId: user.id
                 }
