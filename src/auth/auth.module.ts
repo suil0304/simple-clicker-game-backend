@@ -10,8 +10,8 @@ import { JwtStrategy } from '../strategy/jwt.strategy';
     imports: [
         PrismaModule,
         JwtModule.registerAsync({
-            inject: [ConfigService, JwtStrategy],
-            useFactory:(config:ConfigService, _:JwtStrategy) => {
+            inject: [ConfigService],
+            useFactory:(config:ConfigService) => {
                 return {
                     secret: config.getOrThrow("jwt.secret"),
                     signOptions: {
@@ -22,6 +22,6 @@ import { JwtStrategy } from '../strategy/jwt.strategy';
         })
     ],
     controllers: [AuthController],
-    providers: [AuthService],
+    providers: [AuthService, JwtStrategy],
 })
 export class AuthModule {}
