@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { RegisterOrLoginDTO } from './dto/register-or-login.dto';
+import { RegisterOrLoginDTO } from '../dto/register-or-login.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 
@@ -14,24 +14,35 @@ export class AuthService {
     async register(registerData:RegisterOrLoginDTO):Promise<string> {
         const hashPassword = await bcrypt.hash(registerData.password, 10);
 
-        const user = await this.prisma.user.create({
-            data: {
-                name: registerData.name,
-                password: hashPassword,
-                stats: {
-
-                },
-                upgrades: {
-
-                },
-                settings: {
-                    
+        return this.prisma.$transaction(async (db) => {
+            const user = await this.prisma.user.create({
+                data: {
+                    name: registerData.name,
+                    password: hashPassword
                 }
-            }
-        });
+            });
 
-        return this.jwt.signAsync({
-            sub: user.id
+            await this.prisma.stats.create({
+                data: {
+                    userId: user.id
+                }
+            });
+
+            await this.prisma.upgrade.create({
+                data: {
+                    userId: user.id
+                }
+            });
+
+            await this.prisma.setting.create({
+                data: {
+                    userId: user.id
+                }
+            });
+
+            return this.jwt.signAsync({
+                sub: user.id
+            });
         });
     }
 

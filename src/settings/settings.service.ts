@@ -38,31 +38,29 @@ export class SettingsService {
     }
 
     async applySetting(userId:number, applySettingData:ApplySettingDTO):Promise<SettingInfo> {
-        return this.prisma.$transaction(async (db) => {
-            const settings = await db.setting.findUniqueOrThrow({
-                where: {
-                    userId: userId
-                }
-            });
-
-            const curApplyValueType = typeof applySettingData.applyValue;
-            const curSettingValueType = typeof settings[applySettingData.settingKey];
-            if(curApplyValueType !== curSettingValueType) {
-                throw new BadRequestException(`${applySettingData.settingKey}의 applyValue는 ${curSettingValueType} 타입이어야 합니다.`);
+        const settings = await this.prisma.setting.findUniqueOrThrow({
+            where: {
+                userId: userId
             }
-
-            await db.setting.update({
-                where: {
-                    userId: userId
-                },
-                data: {
-                    [applySettingData.settingKey]: applySettingData.applyValue as any
-                }
-            });
-
-            const curSettingData = settingData[applySettingData.settingKey];
-
-            return SettingUtil.getSettingInfo(applySettingData.settingKey, applySettingData.applyValue, curSettingData);
         });
+
+        const curApplyValueType = typeof applySettingData.applyValue;
+        const curSettingValueType = typeof settings[applySettingData.settingKey];
+        if(curApplyValueType !== curSettingValueType) {
+            throw new BadRequestException(`${applySettingData.settingKey}의 applyValue는 ${curSettingValueType} 타입이어야 합니다.`);
+        }
+
+        await this.prisma.setting.update({
+            where: {
+                userId: userId
+            },
+            data: {
+                [applySettingData.settingKey]: applySettingData.applyValue as any
+            }
+        });
+
+        const curSettingData = settingData[applySettingData.settingKey];
+
+        return SettingUtil.getSettingInfo(applySettingData.settingKey, applySettingData.applyValue, curSettingData);
     }
 }
