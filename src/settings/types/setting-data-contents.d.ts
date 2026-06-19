@@ -2,16 +2,16 @@ import { SettingOption } from "./setting-option";
 import { SettingType } from "./setting-type";
 
 export interface SettingDataContents {
-    "name":string;
-    "description":string;
+    readonly "name":string;
+    readonly "description":string;
 
-    "type":SettingType;
+    readonly "type":SettingType;
 
     // string type only
-    "options":SettingOption | null;
+    readonly "options":SettingOption | null;
 
     // int / float / percent type only
-    "minValue":number | null;
-    "maxValue":number | null;
-    "step":number | null;
+    readonly "minValue":number | null;
+    readonly "maxValue":number | null;
+    readonly "step":number | null;
 }
