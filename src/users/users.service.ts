@@ -42,7 +42,7 @@ export class UsersService {
     });
   }
 
-  async delete(id: number, userData: RegisterOrLoginDTO): Promise<UserSafeDTO> {
+  async remove(id: number, userData: RegisterOrLoginDTO): Promise<UserSafeDTO> {
     const user = await this.prisma.user.findUniqueOrThrow({
       where: {
         id: id

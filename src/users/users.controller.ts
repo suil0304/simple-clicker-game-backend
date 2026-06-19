@@ -28,10 +28,10 @@ export class UsersController {
     }
 
     @Delete()
-    async delete(
+    async remove(
         @GetUser("sub") userId:number,
         @Body() userData:RegisterOrLoginDTO
     ) {
-        return this.service.delete(userId, userData);
+        return this.service.remove(userId, userData);
     }
 }
