@@ -1,22 +1,36 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { User } from '../generated/prisma';
 import { UpdateUserDTO } from './dto/update-user.dto';
+import { UserSafeDTO } from './dto/user-safe.dto';
 
 @Injectable()
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getOne(id: number): Promise<User> {
+  async getOne(id: number): Promise<UserSafeDTO> {
     return this.prisma.user.findUniqueOrThrow({
+      select: {
+        id: true,
+        name: true,
+        nickname: true,
+        createdAt: true,
+        updatedAt: true
+      },
       where: {
         id: id,
       },
     });
   }
 
-  async update(id: number, userData: UpdateUserDTO): Promise<User> {
+  async update(id: number, userData: UpdateUserDTO): Promise<UserSafeDTO> {
     return this.prisma.user.update({
+      select: {
+        id: true,
+        name: true,
+        nickname: true,
+        createdAt: true,
+        updatedAt: true
+      },
       where: {
         id: id,
       },
@@ -26,8 +40,15 @@ export class UsersService {
     });
   }
 
-  async delete(id: number): Promise<User> {
+  async delete(id: number): Promise<UserSafeDTO> {
     return this.prisma.user.delete({
+      select: {
+        id: true,
+        name: true,
+        nickname: true,
+        createdAt: true,
+        updatedAt: true
+      },
       where: {
         id: id,
       },

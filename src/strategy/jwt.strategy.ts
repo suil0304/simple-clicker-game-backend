@@ -7,7 +7,6 @@ import { ConfigService } from "@nestjs/config";
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, "jwt") {
     constructor(readonly config:ConfigService) {
-        console.log("Test");
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             secretOrKey: config.getOrThrow("jwt.secret")
