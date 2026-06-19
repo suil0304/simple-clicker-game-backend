@@ -3,6 +3,8 @@ import { PrismaService } from '../prisma/prisma.service';
 import { RegisterOrLoginDTO } from '../dto/register-or-login.dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { JwtContainer } from '../types/jwt-container';
+import { JwtUtil } from './utils/jwt.util';
 
 @Injectable()
 export class AuthService {
@@ -11,7 +13,7 @@ export class AuthService {
         private readonly jwt:JwtService
     ) {}
 
-    async register(registerData:RegisterOrLoginDTO):Promise<string> {
+    async register(registerData:RegisterOrLoginDTO):Promise<JwtContainer> {
         const hashPassword = await bcrypt.hash(registerData.password, 10);
 
         return this.prisma.$transaction(async (db) => {
@@ -40,13 +42,15 @@ export class AuthService {
                 }
             });
 
-            return this.jwt.signAsync({
+            const token = await this.jwt.signAsync({
                 sub: user.id
             });
+
+            return JwtUtil.getJwtContainer(token);
         });
     }
 
-    async login(loginData:RegisterOrLoginDTO):Promise<string> {
+    async login(loginData:RegisterOrLoginDTO):Promise<JwtContainer> {
         const user = await this.prisma.user.findUnique({
             where: {
                 name: loginData.name
@@ -63,8 +67,10 @@ export class AuthService {
             throw new UnauthorizedException("이름 또는 비밀번호가 일치하지 않습니다.");
         }
 
-        return this.jwt.signAsync({
+        const token = await this.jwt.signAsync({
             sub: user.id
         });
+
+        return JwtUtil.getJwtContainer(token);
     }
 }
