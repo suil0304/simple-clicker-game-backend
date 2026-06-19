@@ -3,7 +3,7 @@ import {
   Controller,
   Delete,
   Get,
-  Patch,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
@@ -22,7 +22,7 @@ export class UsersController {
         return this.service.getOne(userId);
     }
 
-    @Patch()
+    @Put()
     async update(@GetUser("sub") userId:number, @Body() userData:UpdateUserDTO) {
         return this.service.update(userId, userData);
     }
