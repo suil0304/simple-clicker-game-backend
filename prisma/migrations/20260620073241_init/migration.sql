@@ -15,10 +15,10 @@ CREATE TABLE `User` (
 CREATE TABLE `Stats` (
     `userId` INTEGER NOT NULL,
     `gold` INTEGER NOT NULL DEFAULT 0,
-    `goldPerClick` INTEGER NOT NULL DEFAULT 0,
+    `goldPerClick` INTEGER NOT NULL DEFAULT 1,
     `goldPerSecond` INTEGER NOT NULL DEFAULT 0,
-    `criticalMult` DECIMAL(10, 2) NOT NULL DEFAULT 0,
-    `criticalRate` DECIMAL(3, 2) NOT NULL DEFAULT 0,
+    `criticalMult` FLOAT NOT NULL DEFAULT 2,
+    `criticalRate` FLOAT NOT NULL DEFAULT 10,
     `clickCount` INTEGER NOT NULL DEFAULT 0,
 
     PRIMARY KEY (`userId`)
