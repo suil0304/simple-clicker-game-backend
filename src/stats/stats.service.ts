@@ -22,8 +22,8 @@ export class StatsService {
     const addGold =
       CriticalUtil.calcCriticalGold(
         syncData.deltaClickCount * result.goldPerClick,
-        result.criticalMult.toNumber(),
-        result.criticalRate.toNumber(),
+        result.criticalMult,
+        result.criticalRate,
       ) +
       syncData.deltaSecondCount * result.goldPerSecond;
 
