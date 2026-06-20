@@ -1,11 +1,19 @@
-import { IsInt, Min } from 'class-validator';
+import { IsArray, IsInt, Min, ValidateNested } from 'class-validator';
+import { ClickDataDTO } from './click-data.dto';
+import { Type } from 'class-transformer';
 
 export class SyncDataDTO {
-  @IsInt()
-  @Min(0)
-  readonly deltaClickCount!: number;
+    @IsInt()
+    readonly totalClickAddGold!:number;
 
-  @IsInt()
-  @Min(0)
-  readonly deltaSecondCount!: number;
+    @IsArray()
+    @ValidateNested({
+        each: true
+    })
+    @Type(() => ClickDataDTO)
+    readonly clickDatas!:ClickDataDTO[];
+
+    @IsInt()
+    @Min(0)
+    readonly deltaSecondCount!: number;
 }

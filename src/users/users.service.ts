@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { UpdateUserDTO } from './dto/update-user.dto';
-import { UserSafeDTO } from './dto/user-safe.dto';
+import type { UserSafeData } from './types/user-safe-data';
 import * as bcrypt from "bcrypt";
 import { RegisterOrLoginDTO } from '../dto/register-or-login.dto';
 
@@ -9,7 +9,7 @@ import { RegisterOrLoginDTO } from '../dto/register-or-login.dto';
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getOne(id: number): Promise<UserSafeDTO> {
+  async getOne(id: number): Promise<UserSafeData> {
     return this.prisma.user.findUniqueOrThrow({
       select: {
         id: true,
@@ -24,7 +24,7 @@ export class UsersService {
     });
   }
 
-  async update(id: number, userData: UpdateUserDTO): Promise<UserSafeDTO> {
+  async update(id: number, userData: UpdateUserDTO): Promise<UserSafeData> {
     return this.prisma.user.update({
       select: {
         id: true,
@@ -42,7 +42,7 @@ export class UsersService {
     });
   }
 
-  async remove(id: number, userData: RegisterOrLoginDTO): Promise<UserSafeDTO> {
+  async remove(id: number, userData: RegisterOrLoginDTO): Promise<UserSafeData> {
     const user = await this.prisma.user.findUniqueOrThrow({
       where: {
         id: id
