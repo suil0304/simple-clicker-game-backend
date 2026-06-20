@@ -12,16 +12,16 @@ export class SettingsController {
     constructor(private readonly service:SettingsService) {}
 
     @Get()
-    async getSettings(@GetUser("sub") userId:number) {
-        return this.service.getSettings(userId);
+    async getAll(@GetUser("sub") userId:number) {
+        return this.service.getAll(userId);
     }
 
     @Get("/:upgradeKey")
-    async getSetting(
+    async getOne(
         @GetUser("sub") userId:number,
         @Param("upgradeKey", ParseSettingKeyPipe) settingKey:SettingKey
     ) {
-        return this.service.getSetting(userId, settingKey);
+        return this.service.getOne(userId, settingKey);
     }
 
     @Post()

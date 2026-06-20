@@ -11,7 +11,7 @@ import { UpgradeInfo } from './types/upgrade-info';
 export class UpgradesService {
     constructor(private readonly prisma:PrismaService) {}
 
-    async getUpgrades(userId:number):Promise<UpgradeInfo[]> {
+    async getAll(userId:number):Promise<UpgradeInfo[]> {
         const [userStats, upgradesLevelData] = await Promise.all([
             this.prisma.stats.findUniqueOrThrow({
                 where: {
@@ -42,7 +42,7 @@ export class UpgradesService {
         return infos;
     }
 
-    async getUpgrade(userId:number, upgradeKey:UpgradeKey):Promise<UpgradeInfo> {
+    async getOne(userId:number, upgradeKey:UpgradeKey):Promise<UpgradeInfo> {
         const userStats = await this.prisma.stats.findUniqueOrThrow({
             where: {
                 userId: userId

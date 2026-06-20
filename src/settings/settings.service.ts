@@ -10,7 +10,7 @@ import { ApplySettingDTO } from './dto/apply-setting.dto';
 export class SettingsService {
     constructor(private readonly prisma:PrismaService) {}
 
-    async getSettings(userId:number):Promise<SettingInfo[]> {
+    async getAll(userId:number):Promise<SettingInfo[]> {
         const settings = await this.prisma.setting.findUniqueOrThrow({
             where: {
                 userId: userId
@@ -26,7 +26,7 @@ export class SettingsService {
         return settingInfos;
     }
 
-    async getSetting(userId:number, settingKey:SettingKey):Promise<SettingInfo> {
+    async getOne(userId:number, settingKey:SettingKey):Promise<SettingInfo> {
         const settings = await this.prisma.setting.findUniqueOrThrow({
             where: {
                 userId: userId

@@ -12,16 +12,16 @@ export class UpgradesController {
     constructor(private readonly upgradesService: UpgradesService) {}
 
     @Get()
-    async getUpgrades(@GetUser("sub") userId:number) {
-        return this.upgradesService.getUpgrades(userId);
+    async getAll(@GetUser("sub") userId:number) {
+        return this.upgradesService.getAll(userId);
     }
 
     @Get("/:upgradeKey")
-    async getUpgrade(
+    async getOne(
         @GetUser("sub") userId:number,
         @Param("upgradeKey", ParseUpgradeKeyPipe) upgradeKey:UpgradeKey
     ) {
-        return this.upgradesService.getUpgrade(userId, upgradeKey);
+        return this.upgradesService.getOne(userId, upgradeKey);
     }
 
     @Post()

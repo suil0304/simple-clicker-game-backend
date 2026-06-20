@@ -29,12 +29,12 @@ model Stats {
 
     // gold
     gold Int @default(0)
-    goldPerClick Int @default(0)
+    goldPerClick Int @default(1)
     goldPerSecond Int @default(0)
 
     // critical
-    criticalMult Decimal @default(0) @db.Decimal(10, 2)
-    criticalRate Decimal @default(0) @db.Decimal(3, 2)
+    criticalMult Decimal @default(2) @db.Decimal(10, 2)
+    criticalRate Decimal @default(10) @db.Decimal(3, 2)
 
     // stats thingie
     clickCount Int @default(0)
