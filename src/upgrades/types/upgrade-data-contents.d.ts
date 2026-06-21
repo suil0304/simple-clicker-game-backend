@@ -13,4 +13,5 @@ export interface UpgradeDataContents {
     readonly "base-value":number[];
     readonly "mult-value":number;
     readonly "type-value":ValueType;
+    readonly "default-value":number;
 }

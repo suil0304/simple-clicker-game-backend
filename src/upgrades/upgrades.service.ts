@@ -8,7 +8,7 @@ import { UpgradeKey } from './types/upgrade-key';
 import { UpgradeInfo } from './types/upgrade-info';
 import { GuestBuyUpgradeDTO } from './dto/guest-buy-upgrade.dto';
 import { GuestUpgradeDataDTO } from './dto/guest-upgrade-data.dto';
-import { UpgradeInfoWithGold } from './types/upgrade-info-with-gold';
+import { UpgradeInfoContainer } from './types/upgrade-info-container';
 
 @Injectable()
 export class UpgradesService {
@@ -69,7 +69,7 @@ export class UpgradesService {
         );
     }
 
-    async buyUpgrade(userId:number, upgradeType:UpgradeDTO):Promise<UpgradeInfoWithGold> {
+    async buyUpgrade(userId:number, upgradeType:UpgradeDTO):Promise<UpgradeInfoContainer> {
         return this.prisma.$transaction(async (db) => {
             const userStats = await db.stats.findUniqueOrThrow({
                 where: {
@@ -118,7 +118,7 @@ export class UpgradesService {
                     }
                 }
             });
-            await db.stats.update({
+            const upgradeStats = await db.stats.update({
                 where: {
                     userId: userId
                 },
@@ -126,20 +126,19 @@ export class UpgradesService {
                     gold: {
                         increment: -curPrice
                     },
-                    [upgradeKey]: {
-                        increment: nextValue
-                    }
+                    [upgradeKey]: curUpgradeData['default-value'] + nextValue
                 }
             });
 
-            const info:UpgradeInfoWithGold = {
+            const info:UpgradeInfoContainer = {
                 upgradeInfo: UpgradeUtil.getNextUpgradeInfo(
                     userUpgrades[upgradeLevelKey],
                     userStats.gold - curPrice,
                     upgradeKey,
                     curUpgradeData
                 ),
-                curGold: userStats.gold - curPrice
+                curGold: userStats.gold - curPrice,
+                curStats: upgradeStats[upgradeKey]
             }
 
             return info;
@@ -165,7 +164,7 @@ export class UpgradesService {
         return infos;
     }
 
-    async buyGuestUpgrade(guestUpgradeData:GuestBuyUpgradeDTO):Promise<UpgradeInfoWithGold> {
+    async buyGuestUpgrade(guestUpgradeData:GuestBuyUpgradeDTO):Promise<UpgradeInfoContainer> {
         const upgradeKey:UpgradeKey = guestUpgradeData.upgradeKey;
 
         const curUpgradeData = upgradeDatas[upgradeKey];
@@ -184,14 +183,22 @@ export class UpgradesService {
             throw new ConflictException("구매하려는 업그레이드의 가격이 현재 소지 중인 골드보다 높습니다.");
         }
 
-        const info:UpgradeInfoWithGold = {
+        const nextValue = UpgradeUtil.calcValue(
+            guestUpgradeData.level + 1,
+            curUpgradeData['base-value'],
+            curUpgradeData['mult-value'],
+            curUpgradeData['type-value']
+        );
+
+        const info:UpgradeInfoContainer = {
             upgradeInfo: UpgradeUtil.getNextUpgradeInfo(
                 guestUpgradeData.level,
                 guestUpgradeData.gold - curPrice,
                 upgradeKey,
                 curUpgradeData
             ),
-            curGold: guestUpgradeData.gold - curPrice
+            curGold: guestUpgradeData.gold - curPrice,
+            curStats: curUpgradeData['default-value'] + nextValue
         }
 
         return info;
