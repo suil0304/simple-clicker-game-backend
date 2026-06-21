@@ -23,6 +23,7 @@ export class StatsController {
     return this.service.doSync(userId, syncData);
   }
 
+  @Get("/default")
   async getDefaultData() {
     return this.service.getDefaultData();
   }
