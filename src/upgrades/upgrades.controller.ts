@@ -18,6 +18,16 @@ export class UpgradesController {
         return this.service.getAll(userId);
     }
 
+    @Post("/guest/infos")
+    async getGuestInfos(@Body() guestUpgradeData:GuestUpgradeDataDTO) {
+        return this.service.getGuestInfos(guestUpgradeData);
+    }
+
+    @Post("/guest")
+    async buyGuestUpgrade(@Body() calcUpgradeData:GuestBuyUpgradeDTO) {
+        return this.service.buyGuestUpgrade(calcUpgradeData);
+    }
+
     @UseGuards(AuthGuard("jwt"))
     @Get("/:upgradeKey")
     async getOne(
@@ -34,15 +44,5 @@ export class UpgradesController {
         @Body() upgradeType:UpgradeDTO
     ) {
         return this.service.buyUpgrade(userId, upgradeType);
-    }
-
-    @Get("/guest")
-    async getGuestInfos(@Body() guestUpgradeData:GuestUpgradeDataDTO) {
-        return this.service.getGuestInfos(guestUpgradeData);
-    }
-
-    @Post("/guest")
-    async buyGuestUpgrade(@Body() calcUpgradeData:GuestBuyUpgradeDTO) {
-        return this.service.buyGuestUpgrade(calcUpgradeData);
     }
 }

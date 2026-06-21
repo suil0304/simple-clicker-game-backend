@@ -126,7 +126,9 @@ export class UpgradesService {
                     gold: {
                         increment: -curPrice
                     },
-                    [upgradeKey]: nextValue
+                    [upgradeKey]: {
+                        increment: nextValue
+                    }
                 }
             });
 
