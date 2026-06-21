@@ -1,3 +1,3 @@
-import { upgradeData } from "../data/upgrade.data";
+import { upgradeDatas } from "../data/upgrade.data";
 
-export type UpgradeKey = keyof typeof upgradeData;
+export type UpgradeKey = keyof typeof upgradeDatas;

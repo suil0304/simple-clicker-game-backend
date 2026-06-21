@@ -5,30 +5,44 @@ import type { UpgradeKey } from './types/upgrade-key';
 import { ParseUpgradeKeyPipe } from './pipes/parse-upgrade-key.pipe';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from '../decorators/get-user.decorator';
+import { GuestBuyUpgradeDTO } from './dto/guest-buy-upgrade.dto';
+import { GuestUpgradeDataDTO } from './dto/guest-upgrade-data.dto';
 
-@UseGuards(AuthGuard("jwt"))
 @Controller('upgrades')
 export class UpgradesController {
-    constructor(private readonly upgradesService: UpgradesService) {}
+    constructor(private readonly service: UpgradesService) {}
 
+    @UseGuards(AuthGuard("jwt"))
     @Get()
     async getAll(@GetUser("sub") userId:number) {
-        return this.upgradesService.getAll(userId);
+        return this.service.getAll(userId);
     }
 
+    @UseGuards(AuthGuard("jwt"))
     @Get("/:upgradeKey")
     async getOne(
         @GetUser("sub") userId:number,
         @Param("upgradeKey", ParseUpgradeKeyPipe) upgradeKey:UpgradeKey
     ) {
-        return this.upgradesService.getOne(userId, upgradeKey);
+        return this.service.getOne(userId, upgradeKey);
     }
 
+    @UseGuards(AuthGuard("jwt"))
     @Post()
     async buyUpgrade(
         @GetUser("sub") userId:number,
         @Body() upgradeType:UpgradeDTO
     ) {
-        return this.upgradesService.buyUpgrade(userId, upgradeType);
+        return this.service.buyUpgrade(userId, upgradeType);
+    }
+
+    @Get("/guest")
+    async getGuestInfos(@Body() guestUpgradeData:GuestUpgradeDataDTO) {
+        return this.service.getGuestInfos(guestUpgradeData);
+    }
+
+    @Post("/guest")
+    async buyGuestUpgrade(@Body() calcUpgradeData:GuestBuyUpgradeDTO) {
+        return this.service.buyGuestUpgrade(calcUpgradeData);
     }
 }

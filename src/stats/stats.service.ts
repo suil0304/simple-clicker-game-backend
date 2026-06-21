@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { Stats } from '../generated/prisma';
 import { SyncDataDTO } from './dto/sync-data.dto';
+import { StatsDefaultData } from './types/stats-default-data';
 
 @Injectable()
 export class StatsService {
@@ -42,5 +43,15 @@ export class StatsService {
         },
       },
     });
+  }
+
+  async getDefaultData():Promise<StatsDefaultData> {
+    return {
+      gold: 0,
+      goldPerClick: 1,
+      goldPerSecond: 0,
+      criticalMult: 2,
+      criticalRate: 10
+    };
   }
 }

@@ -1,4 +1,4 @@
-import { upgradeData } from "../data/upgrade.data";
+import { upgradeDatas } from "../data/upgrade.data";
 import { UpgradeInfo } from "../types/upgrade-info";
 import { UpgradeKey } from "../types/upgrade-key";
 import { ValueType } from "../types/value-type";
@@ -49,7 +49,7 @@ export class UpgradeUtil {
         }
     }
 
-    public static getCurUpgradeInfo(curLevel:number, curGold:number, upgradeType:UpgradeKey, curUpgradeData:typeof upgradeData[typeof upgradeType]):UpgradeInfo {
+    public static getCurUpgradeInfo(curLevel:number, curGold:number, upgradeType:UpgradeKey, curUpgradeData:typeof upgradeDatas[typeof upgradeType]):UpgradeInfo {
         const curPrice = UpgradeUtil.calcPrice(
             curLevel,
             curUpgradeData['base-price'],
@@ -68,19 +68,27 @@ export class UpgradeUtil {
             curUpgradeData['type-value']
         );
 
+        const isMaxLevel = this.isMaxUpgrade(curLevel, curUpgradeData["max-level"]);
         const upgradeInfo:UpgradeInfo = {
+            name: curUpgradeData.name,
+            description: curUpgradeData.description,
             upgradeKey: upgradeType,
             level: curLevel,
             curPrice: curPrice,
             curValue: curValue,
             nextValue: nextValue,
-            canBuy: curGold >= curPrice
+            canBuy: !isMaxLevel ? curGold >= curPrice : false,
+            isMaxLevel: isMaxLevel
         };
 
         return upgradeInfo;
     }
 
-    public static getNextUpgradeInfo(curLevel:number, curGold:number, upgradeType:UpgradeKey, curUpgradeData:typeof upgradeData[typeof upgradeType]):UpgradeInfo {
+    public static getNextUpgradeInfo(curLevel:number, curGold:number, upgradeType:UpgradeKey, curUpgradeData:typeof upgradeDatas[typeof upgradeType]):UpgradeInfo {
         return this.getCurUpgradeInfo(curLevel + 1, curGold, upgradeType, curUpgradeData);
+    }
+
+    public static isMaxUpgrade(curLevel:number, maxLevel:number | null):boolean {
+        return maxLevel ? curLevel >= maxLevel : false;
     }
 }
