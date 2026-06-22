@@ -30,7 +30,7 @@
         "base-value": [0.1],
         "mult-value": 1,
         "type-value": "stack",
-        "default-value": 0
+        "default-value": 2
     },
     "criticalRate": {
         "name": "크리티컬 확률 증가",
@@ -41,6 +41,6 @@
         "base-value": [0.5],
         "mult-value": 1,
         "type-value": "stack",
-        "default-value": 0
+        "default-value": 10
     }
 }
